@@ -47,78 +47,84 @@ add_project_link_arguments(
         language: 'c'
 )
 
-cap_dep = dependency('libcap')
-check_dep = dependency('check', required: get_option('with_tests'))
-crypto_dep = dependency('libcrypto')
-czmq_dep = dependency('libczmq', version: '>= 3.0.2')
-dl_dep = cc.find_library('dl', required : true)
-dpdk_dep = dependency('libdpdk', version: '>= 19.11')
-ini_dep = cc.find_library('inih', required: true)
-json_dep = dependency('json-c', required: get_option('with_tests'))
-m_dep = cc.find_library('m', required : true)
-mnl_dep = dependency('libmnl')
-ndpi_dep = dependency('libndpi', version: '>= 3.4')
-osip2_dep = dependency('libosip2')
-pcap_dep = cc.find_library('libpcap', required: true)
+# The protobuf libraries build on their own: with protobuf_only, a system
+# without the DPDK dataplane (kernel forwarding) still gets the protocol
+# definitions and bindings the configuration packages use.
 protobuf_dep = dependency('protobuf')
 proto_c_dep = dependency('libprotobuf-c', version: '>= 1.0.0')
-rte_bus_vdev_dep = cc.find_library('rte_bus_vdev', required : true)
-rte_net_bond_dep = cc.find_library('rte_net_bond', required : true)
-rte_net_ring_dep = cc.find_library('rte_net_ring', required: get_option('with_tests'))
-rte_net_vhost_dep = cc.find_library('rte_net_vhost', required : true)
-swport_dep = dependency('vyatta-dpdk-swport', version: '>= 0.1.3')
-systemd_dep = dependency('libsystemd', required: get_option('use_systemd'))
-threads_dep = dependency('threads')
-urcu_cds_dep = dependency('liburcu-cds', version: '>= 0.8.0')
-urcu_dep = dependency('liburcu', version: '>= 0.8.0')
-urcu_qsbr_dep = dependency('liburcu-qsbr', version: '>= 0.8.0')
-zmq_dep = dependency('libzmq', version: '>= 4.0.4')
-
-subdir('include')
 subdir('protobuf')
-subdir('src/pipeline')
-subdir('src')
 
-if get_option('with_tests').enabled()
-        subdir('src/pipeline/nodes/sample')
-        subdir('tests/whole_dp')
-endif
+if not get_option('protobuf_only')
+	cap_dep = dependency('libcap')
+	check_dep = dependency('check', required: get_option('with_tests'))
+	crypto_dep = dependency('libcrypto')
+	czmq_dep = dependency('libczmq', version: '>= 3.0.2')
+	dl_dep = cc.find_library('dl', required : true)
+	dpdk_dep = dependency('libdpdk', version: '>= 19.11')
+	ini_dep = cc.find_library('inih', required: true)
+	json_dep = dependency('json-c', required: get_option('with_tests'))
+	m_dep = cc.find_library('m', required : true)
+	mnl_dep = dependency('libmnl')
+	ndpi_dep = dependency('libndpi', version: '>= 3.4')
+	osip2_dep = dependency('libosip2')
+	pcap_dep = cc.find_library('libpcap', required: true)
+	rte_bus_vdev_dep = cc.find_library('rte_bus_vdev', required : true)
+	rte_net_bond_dep = cc.find_library('rte_net_bond', required : true)
+	rte_net_ring_dep = cc.find_library('rte_net_ring', required: get_option('with_tests'))
+	rte_net_vhost_dep = cc.find_library('rte_net_vhost', required : true)
+	swport_dep = dependency('vyatta-dpdk-swport', version: '>= 0.1.3')
+	systemd_dep = dependency('libsystemd', required: get_option('use_systemd'))
+	threads_dep = dependency('threads')
+	urcu_cds_dep = dependency('liburcu-cds', version: '>= 0.8.0')
+	urcu_dep = dependency('liburcu', version: '>= 0.8.0')
+	urcu_qsbr_dep = dependency('liburcu-qsbr', version: '>= 0.8.0')
+	zmq_dep = dependency('libzmq', version: '>= 4.0.4')
 
-install_data('dataplane-drivers.conf',
-        install_dir: get_option('sysconfdir') / 'vyatta'
-)
+	subdir('include')
+	subdir('src/pipeline')
+	subdir('src')
 
-install_data('dataplane-drivers-default.conf',
-        install_dir: get_option('datadir') / 'vyatta'
-)
+	if get_option('with_tests').enabled()
+	        subdir('src/pipeline/nodes/sample')
+	        subdir('tests/whole_dp')
+	endif
 
-install_data('mlx4_core.conf',
-        install_dir: '/etc/modprobe.d'
-)
+	install_data('dataplane-drivers.conf',
+	        install_dir: get_option('sysconfdir') / 'vyatta'
+	)
 
-pkg = import('pkgconfig')
-pkg.generate(
-        filebase: 'vyatta-dataplane-dev',
-        name: 'Vyatta Dataplane',
-        description: 'Dataplane Plugin Development',
-        subdirs: 'vyatta-dataplane',
-        libraries: jsonw_library
-)
-pkg.generate(
-        filebase: 'libvyattafal',
-        name: 'Vyatta Forwarding Abstraction Layer',
-        description: 'Dataplane FAL Plugin Development',
-        subdirs: 'vyatta-dataplane',
-        libraries: []
-)
+	install_data('dataplane-drivers-default.conf',
+	        install_dir: get_option('datadir') / 'vyatta'
+	)
 
-run_clang_tidy = find_program('run-clang-tidy', required: false)
-if run_clang_tidy.found() and (cc.get_id() == 'clang')
-        run_target('clang-tidy',
-                command: [ 'scripts/run-clang-tidy_wrapper.sh' ],
-                depends: [pl_fused_gen_c, protobuf_generated_c, sample_generated_protobuf_c]
-        )
-else
-        run_target('clang-tidy',
-                command: ['echo', 'install clang-tidy and configure CC=clang', '&&', 'false'])
+	install_data('mlx4_core.conf',
+	        install_dir: '/etc/modprobe.d'
+	)
+
+	pkg = import('pkgconfig')
+	pkg.generate(
+	        filebase: 'vyatta-dataplane-dev',
+	        name: 'Vyatta Dataplane',
+	        description: 'Dataplane Plugin Development',
+	        subdirs: 'vyatta-dataplane',
+	        libraries: jsonw_library
+	)
+	pkg.generate(
+	        filebase: 'libvyattafal',
+	        name: 'Vyatta Forwarding Abstraction Layer',
+	        description: 'Dataplane FAL Plugin Development',
+	        subdirs: 'vyatta-dataplane',
+	        libraries: []
+	)
+
+	run_clang_tidy = find_program('run-clang-tidy', required: false)
+	if run_clang_tidy.found() and (cc.get_id() == 'clang')
+	        run_target('clang-tidy',
+	                command: [ 'scripts/run-clang-tidy_wrapper.sh' ],
+	                depends: [pl_fused_gen_c, protobuf_generated_c, sample_generated_protobuf_c]
+	        )
+	else
+	        run_target('clang-tidy',
+	                command: ['echo', 'install clang-tidy and configure CC=clang', '&&', 'false'])
+	endif
 endif
