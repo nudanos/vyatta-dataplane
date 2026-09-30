@@ -1,2 +1,2 @@
-/lib/vplane/poststart.d
-/lib/vplane/prestart.d
+/usr/lib/vplane/poststart.d
+/usr/lib/vplane/prestart.d

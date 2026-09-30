@@ -1,44 +1,47 @@
 Source: vyatta-dataplane
-Section: non-free/net
+Section: net
 Priority: optional
-Maintainer: Vyatta Package Maintainers <DL-vyatta-help@att.com>
-Standards-Version: 3.9.8
-Build-Depends: meson,
-               bvnos-linux-libc-dev-vyatta (>> 4.19.16-0vyatta6),
-               check <!nocheck>,
-               debhelper-compat (= 12),
-               dh-exec,
-               golang-goprotobuf-dev,
-               lcov <!nocheck>,
-               libbsd-dev,
-               libcap-dev,
-               libczmq-dev,
-               libdpdk-dev (>= 20.11-2vyatta12),
-               libgoogle-protocolbuffers-perl,
-               libinih-dev,
-               libjson-c-dev <!nocheck>,
-               libmnl-dev,
-               libndpi-dev (>= 3.4),
-               libnuma-dev,
-               libosip2-dev,
-               libpcap-dev (>= 1.7.0),
-               libprotobuf-c-dev,
-               libprotobuf-dev,
-               libssl-dev,
-               librte-acl-rcu-qsbr-dq-support-dev,
-               librte-crytpodev-session-sym-pool-empty-dev,
-               libsystemd-dev,
-               liburcu-dev (>= 0.8.0),
-               libvyatta-dpdk-swport-dev (>= 0.1.23),
-               libzmq3-dev (>= 4.0.4),
-               perl (>= 5.8.8),
-               pkg-config,
-               protobuf-c-compiler,
-               protobuf-compiler,
-               python3,
+Maintainer: NuDanOS Maintainers <jon@fernandez.tech>
+Standards-Version: 4.7.2
+Build-Depends: debhelper-compat (= 13),
+ meson,
+ linux-libc-dev,
+ check <!nocheck>,
+ dh-exec,
+ golang-goprotobuf-dev,
+ lcov <!nocheck>,
+ libbsd-dev,
+ libcap-dev,
+ libczmq-dev,
+ libdpdk-dev (>= 20.11-2vyatta12),
+ libgoogle-protocolbuffers-perl,
+ libinih-dev,
+ libjson-c-dev <!nocheck>,
+ libmnl-dev,
+ libndpi-dev (>= 3.4),
+ libnuma-dev,
+ libosip2-dev,
+ libpcap-dev (>= 1.7.0),
+ libprotobuf-c-dev,
+ libprotobuf-dev,
+ libssl-dev,
+ librte-acl-rcu-qsbr-dq-support-dev,
+ librte-crytpodev-session-sym-pool-empty-dev,
+ libsystemd-dev,
+ liburcu-dev (>= 0.8.0),
+ libvyatta-dpdk-swport-dev (>= 0.1.23),
+ libzmq3-dev (>= 4.0.4),
+ perl (>= 5.8.8),
+ pkg-config,
+ protobuf-c-compiler,
+ protobuf-compiler,
+ python3
+Rules-Requires-Root: no
+Vcs-Git: https://github.com/nudanos/vyatta-dataplane.git
+Vcs-Browser: https://github.com/nudanos/vyatta-dataplane
 
 Package: vyatta-dataplane
-Section: non-free/net
+Section: net
 Architecture: any
 Recommends: dpdk-modules
 Pre-Depends: ${misc:Pre-Depends}
@@ -113,7 +116,7 @@ Description: Vyatta optimized dataplane
  and forwarding. It supports IPv4, IPv6, firewalling, bridging and more.
 
 Package: vyatta-dataplane-dev
-Section: non-free/devel
+Section: devel
 Architecture: any
 Depends: check,
          libdpdk-dev (>= 20.11-2vyatta12),
@@ -130,7 +133,7 @@ Description: Vyatta dataplane pipeline node build support
  Set of headers required for dataplane compilation
 
 Package: vyatta-dataplane-test
-Section: non-free/devel
+Section: devel
 Architecture: any
 Build-Profiles: <!nocheck>
 Depends: librte-meta-allpmds,
@@ -140,14 +143,14 @@ Description: Vyatta dataplane test binary
  A test binary used for running unit tests
 
 Package: libvyatta-dataplane-proto-support
-Section: non-free/devel
+Section: devel
 Architecture: all
 Depends: ${misc:Depends}, ${perl:Depends}
 Description: Vyatta dataplane protocol buffer files and support
  Set of files defining message formats accepted by the dataplane
 
 Package: vyatta-dataplane-sample-plugin
-Section: non-free/net
+Section: net
 Architecture: any
 Build-Profiles: <!nocheck>
 Depends: vyatta-dataplane | vyatta-dataplane-test,
@@ -158,7 +161,7 @@ Description: Vyatta dataplane sample plugin library
  how a plugin can work.
 
 Package: libvyattafal-dev
-Section: non-free/libdevel
+Section: libdevel
 Architecture: any
 Depends: libdpdk-dev (>= 20.11-2vyatta12), ${misc:Depends}
 Provides: fal-dev-acl,
@@ -253,14 +256,14 @@ Description: Provides Vyatta Vplane.pm modules
  Perl modules that supports system initialization for the dataplane.
 
 Package: libvyatta-dataplane-proto-dev
-Section: non-free/libdevel
+Section: libdevel
 Architecture: any
 Depends: libvyatta-dataplane-proto1 (= ${binary:Version}), ${misc:Depends}
 Description: Provides C++ headers for the dataplane API.
  C++ headers for the dataplane API.
 
 Package: libvyatta-dataplane-proto-c-dev
-Section: non-free/libdevel
+Section: libdevel
 Architecture: any
 Depends: libvyatta-dataplane-proto-c1 (= ${binary:Version}), ${misc:Depends}
 Breaks: libvyatta-dataplane-proto-dev (<<3.13.3)

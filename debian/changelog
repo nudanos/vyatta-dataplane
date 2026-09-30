@@ -1,3 +1,9 @@
+vyatta-dataplane (3.14.25) trixie; urgency=medium
+
+  * Port to Debian 13 (trixie): debhelper-compat 13, Standards-Version 4.7.2, Rules-Requires-Root, NuDanOS Vcs.
+
+ -- NuDanOS Maintainers <jon@fernandez.tech>  Wed, 30 Sep 2026 03:50:18 -0700
+
 vyatta-dataplane (3.14.24) unstable; urgency=medium
 
   [ kalaivani vinothkumar ]
