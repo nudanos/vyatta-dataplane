@@ -27,13 +27,19 @@ ifneq (,$(filter nocheck,$(DEB_BUILD_PROFILES)))
 	DATAPLANE_WITH_TESTS="-Dwith_tests=disabled"
 endif
 
+# Kernel forwarding (NuDanOS milestone 1): only the protobuf packages, no DPDK.
+ifneq (,$(filter pkg.vyatta-dataplane.protobuf-only,$(DEB_BUILD_PROFILES)))
+	DATAPLANE_PROTOBUF_ONLY=-Dprotobuf_only=true
+endif
+
 DATAPLANE_CONFIGURE_FLAGS= \
 	$(CONFIGURE_COVERAGE_FLAGS) \
 	$(WHOLE_DP_ALL_TESTS) \
 	$(DATAPLANE_SANITIZER) \
 	$(DATAPLANE_LTO) \
 	$(DATAPLANE_FUSED) \
-	$(DATAPLANE_WITH_TESTS)
+	$(DATAPLANE_WITH_TESTS) \
+	$(DATAPLANE_PROTOBUF_ONLY)
 
 # Don't override the optimisation flags as they differ for different
 # dataplane make targets
@@ -86,7 +92,13 @@ override_dh_gencontrol: CFG_VERSIONS = $(shell ASAN_OPTIONS=verify_asan_link_ord
 						s/^/vyatta-dataplane-cfg-/" \
 					 | tr '\n' ' ')
 override_dh_gencontrol:
+ifneq (,$(DATAPLANE_PROTOBUF_ONLY))
+	# No dataplane binary to ask for its protocol versions (and no
+	# vyatta-dataplane-protocols-versions package to carry them).
+	dh_gencontrol
+else
 	dh_gencontrol -- -V'protocols:Provides=$(CFG_VERSIONS) $(OP_VERSIONS)'
+endif
 
 override_dh_installsystemd:
 	dh_installsystemd --name=vyatta-dataplane

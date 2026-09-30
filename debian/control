@@ -6,31 +6,31 @@ Standards-Version: 4.7.2
 Build-Depends: debhelper-compat (= 13),
  meson,
  linux-libc-dev,
- check <!nocheck>,
+ check <!nocheck !pkg.vyatta-dataplane.protobuf-only>,
  dh-exec,
  golang-goprotobuf-dev,
- lcov <!nocheck>,
- libbsd-dev,
- libcap-dev,
- libczmq-dev,
- libdpdk-dev (>= 20.11-2vyatta12),
+ lcov <!nocheck !pkg.vyatta-dataplane.protobuf-only>,
+ libbsd-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libcap-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libczmq-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libdpdk-dev (>= 20.11-2vyatta12) <!pkg.vyatta-dataplane.protobuf-only>,
  libgoogle-protocolbuffers-perl,
- libinih-dev,
- libjson-c-dev <!nocheck>,
- libmnl-dev,
- libndpi-dev (>= 3.4),
- libnuma-dev,
- libosip2-dev,
- libpcap-dev (>= 1.7.0),
+ libinih-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libjson-c-dev <!nocheck !pkg.vyatta-dataplane.protobuf-only>,
+ libmnl-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libndpi-dev (>= 3.4) <!pkg.vyatta-dataplane.protobuf-only>,
+ libnuma-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libosip2-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libpcap-dev (>= 1.7.0) <!pkg.vyatta-dataplane.protobuf-only>,
  libprotobuf-c-dev,
  libprotobuf-dev,
- libssl-dev,
- librte-acl-rcu-qsbr-dq-support-dev,
- librte-crytpodev-session-sym-pool-empty-dev,
- libsystemd-dev,
- liburcu-dev (>= 0.8.0),
- libvyatta-dpdk-swport-dev (>= 0.1.23),
- libzmq3-dev (>= 4.0.4),
+ libssl-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ librte-acl-rcu-qsbr-dq-support-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ librte-crytpodev-session-sym-pool-empty-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ libsystemd-dev <!pkg.vyatta-dataplane.protobuf-only>,
+ liburcu-dev (>= 0.8.0) <!pkg.vyatta-dataplane.protobuf-only>,
+ libvyatta-dpdk-swport-dev (>= 0.1.23) <!pkg.vyatta-dataplane.protobuf-only>,
+ libzmq3-dev (>= 4.0.4) <!pkg.vyatta-dataplane.protobuf-only>,
  perl (>= 5.8.8),
  pkg-config,
  protobuf-c-compiler,
@@ -41,6 +41,7 @@ Vcs-Git: https://github.com/nudanos/vyatta-dataplane.git
 Vcs-Browser: https://github.com/nudanos/vyatta-dataplane
 
 Package: vyatta-dataplane
+Build-Profiles: <!pkg.vyatta-dataplane.protobuf-only>
 Section: net
 Architecture: any
 Recommends: dpdk-modules
@@ -116,6 +117,7 @@ Description: Vyatta optimized dataplane
  and forwarding. It supports IPv4, IPv6, firewalling, bridging and more.
 
 Package: vyatta-dataplane-dev
+Build-Profiles: <!pkg.vyatta-dataplane.protobuf-only>
 Section: devel
 Architecture: any
 Depends: check,
@@ -135,7 +137,7 @@ Description: Vyatta dataplane pipeline node build support
 Package: vyatta-dataplane-test
 Section: devel
 Architecture: any
-Build-Profiles: <!nocheck>
+Build-Profiles: <!nocheck !pkg.vyatta-dataplane.protobuf-only>
 Depends: librte-meta-allpmds,
          ${misc:Depends},
          ${shlibs:Depends}
@@ -152,7 +154,7 @@ Description: Vyatta dataplane protocol buffer files and support
 Package: vyatta-dataplane-sample-plugin
 Section: net
 Architecture: any
-Build-Profiles: <!nocheck>
+Build-Profiles: <!nocheck !pkg.vyatta-dataplane.protobuf-only>
 Depends: vyatta-dataplane | vyatta-dataplane-test,
          ${misc:Depends},
          ${shlibs:Depends}
@@ -161,6 +163,7 @@ Description: Vyatta dataplane sample plugin library
  how a plugin can work.
 
 Package: libvyattafal-dev
+Build-Profiles: <!pkg.vyatta-dataplane.protobuf-only>
 Section: libdevel
 Architecture: any
 Depends: libdpdk-dev (>= 20.11-2vyatta12), ${misc:Depends}
@@ -220,6 +223,7 @@ Description: Forwarding Abstraction Library plugin development files
  An API for dataplane FAL plugins
 
 Package: vyatta-dataplane-protocols-versions
+Build-Profiles: <!pkg.vyatta-dataplane.protobuf-only>
 Architecture: all
 Depends: ${misc:Depends}
 Provides: ${protocols:Provides}
@@ -272,6 +276,7 @@ Description: Provides C headers for the dataplane API.
  C headers for the dataplane API.
 
 Package: libvyatta-jsonw1
+Build-Profiles: <!pkg.vyatta-dataplane.protobuf-only>
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Lightweight JSON writer library.
