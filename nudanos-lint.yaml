@@ -1,0 +1,9 @@
+# NuDanOS lint (distro docs/porting.md). Only the protobuf profile is built
+# for NuDanOS 1.0 (protobuf/ and lib/ ship); the DPDK dataplane below is
+# milestone 2 and is linted when it is built.
+skip:
+  - "src/"
+  - "include/"
+  - "tests/"
+  - "scripts/"
+  - "tools/"
