@@ -365,6 +365,7 @@ my @pci_devices = (
 
 # List of Mellanox IB device.
 my @ib_devices = (
+
     # Mellanox ConnectX-4 adapters
     { vendor => 0x15b3, device => 0x1003 },
     { vendor => 0x15b3, device => 0x1004 },
@@ -393,26 +394,24 @@ sub is_supported_pci_device {
     my ( $vendor, $device ) = @_;
 
     return
-      unless grep { $_->{vendor} == $vendor && $_->{device} == $device }
-      @pci_devices;
+      unless grep { $_->{vendor} == $vendor && $_->{device} == $device } @pci_devices;
 }
 
 sub is_supported_ib_device {
     my ( $vendor, $device ) = @_;
 
     return
-      unless grep { $_->{vendor} == $vendor && $_->{device} == $device }
-      @ib_devices;
+      unless grep { $_->{vendor} == $vendor && $_->{device} == $device } @ib_devices;
 }
 
 sub is_supported_device {
     my ( $vendor, $device ) = @_;
 
-    if (is_supported_pci_device($vendor, $device)) {
+    if ( is_supported_pci_device( $vendor, $device ) ) {
         return 1;
     }
 
-    if (is_supported_ib_device($vendor, $device)) {
+    if ( is_supported_ib_device( $vendor, $device ) ) {
         return 1;
     }
 
