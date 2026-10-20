@@ -24,7 +24,7 @@ use File::Slurp;
 use File::Spec;
 
 use lib '/opt/vyatta/share/perl5';
-use Vyatta::Vplane;
+use Vyatta::Vplane qw(is_supported_ib_device is_supported_pci_device);
 
 my $DEBUG = 0;
 

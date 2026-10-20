@@ -10,7 +10,7 @@ use strict;
 use warnings;
 
 use lib '/opt/vyatta/share/perl5';
-use Vyatta::Vplane;
+use Vyatta::Vplane qw(is_supported_ib_device);
 
 #
 # As per the performance tuning guide from Mellanox, the following parameters

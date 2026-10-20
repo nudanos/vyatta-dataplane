@@ -7,3 +7,6 @@ skip:
   - "tests/"
   - "scripts/"
   - "tools/"
+  # maintainer scripts of the DPDK dataplane package (milestone 2)
+  - "debian/vyatta-dataplane.init.d"
+  - "debian/vyatta-dataplane.postinst"

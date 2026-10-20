@@ -12,10 +12,9 @@ package Vyatta::Vplane;
 
 use strict;
 use warnings;
-require Exporter;
+use parent qw(Exporter);
 
-our @ISA    = qw(Exporter);
-our @EXPORT = qw(is_supported_device is_supported_ib_device is_supported_pci_device);
+our @EXPORT_OK = qw(is_supported_device is_supported_ib_device is_supported_pci_device);
 
 # List of supported PCI device Id's generated from rte_pci_dev_ids.h in DPDK
 my @pci_devices = (
@@ -393,15 +392,13 @@ my @ib_devices = (
 sub is_supported_pci_device {
     my ( $vendor, $device ) = @_;
 
-    return
-      unless grep { $_->{vendor} == $vendor && $_->{device} == $device } @pci_devices;
+    return scalar grep { $_->{vendor} == $vendor && $_->{device} == $device } @pci_devices;
 }
 
 sub is_supported_ib_device {
     my ( $vendor, $device ) = @_;
 
-    return
-      unless grep { $_->{vendor} == $vendor && $_->{device} == $device } @ib_devices;
+    return scalar grep { $_->{vendor} == $vendor && $_->{device} == $device } @ib_devices;
 }
 
 sub is_supported_device {
@@ -417,3 +414,5 @@ sub is_supported_device {
 
     return 0;
 }
+
+1;
