@@ -1,3 +1,10 @@
+vyatta-dataplane (3.14.26) trixie; urgency=medium
+
+  * Code-quality lint fixes (distro docs/porting.md): analyzer findings
+    fixed, see the git log.
+
+ -- NuDanOS Maintainers <jon@fernandez.tech>  Wed, 21 Oct 2026 07:01:14 +0000
+
 vyatta-dataplane (3.14.25) trixie; urgency=medium
 
   * Port to Debian 13 (trixie): debhelper-compat 13, Standards-Version 4.7.2, Rules-Requires-Root, NuDanOS Vcs.
